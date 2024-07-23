@@ -1,0 +1,55 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\{{classe}};
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
+class {{classe}}Service
+{
+    protected ${{singularminusculaclasse}};
+
+    public function __construct({{classe}} ${{singularminusculaclasse}})
+    {
+        $this->{{singularminusculaclasse}} = ${{singularminusculaclasse}};
+    }
+    public function show(string $token): array
+    {
+        $find = $this->{{singularminusculaclasse}}->select({{fillable}})->where('token', $token)->firstOrFail();
+
+        return ['data' => ['items' => $find->toArray(), 'totalCount' => 1]];
+    }
+    public function index(): array
+    {
+        $data = [
+            'items' => $this->{{singularminusculaclasse}}->select({{fillable}})->get(),
+            'totalCount' => $this->{{singularminusculaclasse}}->count(),
+        ];
+
+        return [$data];
+    }
+
+    public function store(Request $request): array
+    {
+        $dataFrom = $request->all();
+        $dataFrom['token'] = Str::uuid()->toString();
+
+            $data = $this->{{singularminusculaclasse}}->create($dataFrom);
+        return ['data' => $data->toArray()];
+    }
+    public function update(Request $request, string $token): array
+    {
+
+        $data = $this->{{singularminusculaclasse}}->where('token', $token)->firstOrFail();
+        $dataFrom = $request->all();
+        $data->update($dataFrom);
+
+        return ['data' => $dataFrom];
+    }
+    public function destroy(string $token): void
+    {
+        $data = $this->{{singularminusculaclasse}}->where('token', $token)->firstOrFail();
+        $data->delete();
+    }
+}

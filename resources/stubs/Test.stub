@@ -1,0 +1,97 @@
+<?php
+
+namespace Tests\Unit\Services;
+
+use App\Models\{{classe}};
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
+use Illuminate\Http\Request;
+
+class {{classe}}ServiceTest extends TestCase
+{
+    use RefreshDatabase;
+    use WithFaker;
+
+    protected ${{singularminusculaclasse}}Service;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->{{singularminusculaclasse}}Service = app(\App\Services\{{classe}}Service::class);
+    }
+
+    public function testShowMethodReturnsCorrectData()
+    {
+        $fakeToken = $this->faker->uuid;
+        $fake{{classe}} = {{classe}}::factory()->create(['token' => $fakeToken]);
+
+        $result = $this->{{singularminusculaclasse}}Service->show($fakeToken);
+
+        $expectedData = [
+        ];
+
+        $this->assertEquals([
+            'data' => [
+                'items' => $expectedData,
+                'totalCount' => 1,
+            ],
+        ], $result);
+    }
+
+    public function testIndexMethodReturnsCorrectData()
+    {
+
+        $fake{{classe}}es = {{classe}}::factory(3)->create();
+
+        $result = $this->{{singularminusculaclasse}}Service->index();
+
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Collection::class, $result['data']['items']);
+
+        $this->assertCount(3, $result['data']['items']);
+
+        foreach ($result['data']['items'] as $item) {
+            $this->assertInstanceOf({{classe}}::class, $item);
+        }
+
+        $this->assertEquals(3, $result['data']['totalCount']);
+    }
+
+
+
+    public function testStoreMethodCreatesNew{{classe}}()
+    {
+        $fakeStoreData = [
+        ];
+        $fakeRequest = new Request($fakeStoreData);
+        $result = $this->{{singularminusculaclasse}}Service->store($fakeRequest);
+        $this->assertArrayHasKey('data', $result);
+        $this->assertIsArray($result['data']);
+    }
+
+
+    public function testUpdateMethodUpdates{{classe}}()
+    {
+        $fakeToken = $this->faker->uuid;
+        $fake{{classe}} = \App\Models\{{classe}}::factory()->create(['token' => $fakeToken]);
+
+        $fakeUpdateData = [
+        ];
+        $fakeRequest = new Request($fakeUpdateData);
+        $result = $this->{{singularminusculaclasse}}Service->update($fakeRequest, $fakeToken);
+
+        $this->assertDatabaseHas('{{singularminusculaclasse}}', $fakeUpdateData);
+        $this->assertEquals(['data' => $fakeUpdateData], $result);
+    }
+
+    public function testDestroyMethodDeletes{{classe}}()
+    {
+        $fakeToken = $this->faker->uuid;
+        $fake{{classe}} = {{classe}}::factory()->create(['token' => $fakeToken]);
+
+        $this->{{singularminusculaclasse}}Service->destroy($fakeToken);
+
+        $this->assertDatabaseMissing('{{singularminusculaclasse}}', ['token' => $fakeToken]);
+    }
+}

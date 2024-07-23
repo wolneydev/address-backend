@@ -1,0 +1,6 @@
+Passos :
+docker-compose build
+Docker-composse up -d 
+docker-compose exec app composer install
+Dar permissão a pasta storage/logs
+Acessar o container laravel e executar: php artisan key:generate
